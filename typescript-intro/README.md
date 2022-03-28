@@ -59,6 +59,40 @@ console.log(fixedString); // 5.0000
 // another syntax for Type Assetion
 let fixedString: string = (value as number).toFixed(4);
 console.log(fixedString); // 5.0000
+```
 
+#### Adding Type Annotations to Functions
+
+```
+// JavaScript
+funtion dullFunc(value1, value2){
+    return "I love the way you love the way you love.";
+}
+
+// TypeScript
+function funFunc(score: number, message?:string): string{
+    return "I love the way you love the way you love.";
+}
+```
+
+#### Using the `--noImplicitAny` Compiler Option
+
+```
+function dullFun(value1, value2){
+     return "I love the way you love the way you love."; 
+}
+ERROR TS7006: Parameter 'value1' implicityly has an 'any' type. 
+ERROR TS7006: Parameter 'value2' implicityly has an 'any' type. 
+```
+
+#### Default-Initialized Parameters
+
+```
+function sendGreeting(greeting: stirng = 'Good morning!'):void {
+    console.log(greeting);
+}
+
+sendingGreeting(); // Good morning!
+sendGreeting('Good afternoon, Or Hasson!'); // Good afternoon, Or Hasson!
 ```
 
