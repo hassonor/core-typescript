@@ -1,2 +1,3 @@
 # Project exclude paths
 /typescript-the-big-picture/demo/basic.js
+/.idea
