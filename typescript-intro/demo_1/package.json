@@ -7,12 +7,16 @@
     "start": "webpack serve"
   },
   "author": "Brice Wilson",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "ts-loader": "8.0.17",
-    "typescript": "4.2.2",
+    "typescript": "^4.6.3",
     "webpack": "5.70.0",
     "webpack-cli": "4.9.2",
     "webpack-dev-server": "3.11.2"
+  },
+  "dependencies": {
+    "@types/lodash": "4.14.168",
+    "lodash": "4.17.21"
   }
 }

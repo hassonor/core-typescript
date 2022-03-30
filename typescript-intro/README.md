@@ -246,6 +246,196 @@ class WebDeveloper extends Developer {
 }
 ```
 
+#### Why Use Modules?
+
+____
+
+* Encapsulation
+* Re-usability
+* Create higher-level abstractions
+
+#### Exporting a Declaration
+
+```ts
+// person.ts
+export interface Person {
+}
+
+export function hireDeveloper(): void {
+}
+
+export default class Employee {
+}
+
+class Manager {
+} // not accessible outside the module
+```
+
+#### Exporting Statements
+
+```ts
+interface Person {
+}
+
+function hireDeveloper(): void {
+}
+
+class Employee {
+}
+
+class Manager {
+}
+
+export {Person, hireDeveloper, Employee as StaffMember};
+```
+
+#### Importing from a Module
+
+```ts
+// player.ts
+import {Person, hireDeveloper} from './person';
+
+let human: Person;
+
+import Worker from './person';
+
+let engineer: Worker = new Worker();
+
+import {StaffMember as CoWorker} from './person';
+
+let emp: CoWorker = new CoWorker();
+
+import * as HR from './person';
+
+HR.hireDeveloper();
+```
+
+#### Relative vs. Non-relative Imports
+
+```ts
+// relative imports
+import {Laptop} from '/hardware';
+import {Developer} from './person';
+import {NewHire} from '../HR/recruiting';
+
+// non-relative imports 
+import * as $ from 'jquery';
+import * as lodash from 'lodash';
+
+```
+
+#### Module Resolution Strategies (Classic vs Node)
+
+`tsc --moduleResulution Classic | Node`
+
+* __Classic__:
+    * Default when emitting AMD, UMD, System, or ES2015 modules
+    * Simple
+    * Less Configurable
+* __Node__:
+    * Default when emitting CommonJS modules
+    * Closely mirrors Node module resolution
+    * More configurable
+
+#### Resolving Classic Relative Imports
+
+```ts
+// File: /Source/MultiMath/player.ts
+import {Developer} from './person';
+
+/**
+ *  The import will search:
+ *  1. /Source/MultiMath/person.ts
+ *  2. /Source/MultiMath/person.d.ts
+ */
+```
+
+#### Resolving Classic Non-relative Imports
+
+```ts
+// File: /Source/MultiMath/player.ts
+import {Developer} from 'person';
+/**
+ *  The import will search:
+ *  1. /Source/MultiMath/person.ts
+ *  2. /Source/MultiMath/person.d.ts
+ *  3. /Source/person.ts
+ *  4. /Source/person.d.ts
+ *  (continue searching up the directory tree)
+ */
+```
+
+#### Resolving Node Relative Imports
+
+```ts
+// File: /Source/MultiMath/player.ts
+import {Developer} from 'person';
+/**
+ *  The import will search:
+ *  1. /Source/MultiMath/person.ts
+ *  2. /Source/MultiMath/person.tsx
+ *  3. /Source/MultiMath/person.d.ts
+ *  4. /Source/MultiMath/person/package.json (with "types" property)
+ *  5. /Source/MultiMath/person/index.tsx
+ *  6. /Source/MultiMath/person/index.d.ts
+ *
+ */
+```
+
+#### Resolving Node Non-relative Imports
+
+```ts
+// File: /Source/MultiMath/player.ts
+import {Developer} from 'person';
+/**
+ *  The import will search:
+ *  1. /Source/MultiMath/node_modules/person.ts (person.tsx, person.d.ts)
+ *  2. /Source/MultiMath/node_modules/person/package.json (with "types" property)
+ *  3. /Source/MultiMath/node_modules/@types/person.d.ts
+ *  4. /Source/MultiMath/node_modules/person/index.ts (index.tsx, index.d.ts)
+ *  5. /Source/node_modules/person.ts (person.tsx, person.d.ts)
+ *  6. /Source/node_modules/@types/person.d.ts
+ *  7. /Source/node_modules/person/index.ts (index.tsx, index.d.ts)
+ */
+```
+
+### Type Declaration Files
+
+___
+
+#### What Are Type Declaration Files?
+
+* **_TypeScript wrapper for JavaScript libraries_**
+    * Types for variables, functions, etc.
+    * Define valid property names.
+    * Define function parameters.
+* **_Development-time tool_**
+* **_Filenames end with .d.ts_**
+* **_Available for thousands of libraries_**
+
+#### DefinitelyTyped
+
+* _GitHub repository containing thousands of type declaration files._
+* _Declaration files often maintained independent of related JavaScript library._
+* _Source for installation utilities._
+
+#### Installing Type Declaration Files
+
+* Installed with npm
+* Packages installed from `@types/<name>`
+* Sourced from the DefinitelyTyped repository.
+  <br><br>
+
+### **_Write code faster_**.
+
+## **_Find errors faster_**
+
+# **_Provide value faster_**
+
+__:-)__
+
+
+
 
 
 
