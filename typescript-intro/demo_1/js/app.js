@@ -24,4 +24,7 @@ function postScore(score, playerName) {
     scoreElement.innerText = score + " - " + playerName;
 }
 document.getElementById('startGame').addEventListener('click', startGame);
+function logMessage(message) {
+    console.log(message);
+}
 //# sourceMappingURL=app.js.map
