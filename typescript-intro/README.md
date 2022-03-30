@@ -209,4 +209,43 @@ class Engineer implements Employee {
 }
 ```
 
+#### Static Members
+
+```ts
+class WebDeveloper extends Developer {
+    static jobDescription: string = 'Build cool things!';
+
+    static logFavoriteProtocol() {
+        console.log('HTTPS, of course!');
+    }
+
+    logJobDescription(): void {
+        console.log(WebDeveloper.jobDescription);
+    }
+}
+
+WebDeveloper.logFavoriteProtocol();
+```
+
+#### Constructors
+
+```ts
+class Developer {
+    constructor() {
+        console.log('Creating a new developer.');
+    }
+}
+
+class WebDeveloper extends Developer {
+    readonly favoriteEditor: string;
+
+    constructor(editor: string) {
+        super();
+        this.favoriteEditor = editor;
+    }
+}
+```
+
+
+
 
