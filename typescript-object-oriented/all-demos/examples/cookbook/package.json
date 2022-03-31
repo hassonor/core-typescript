@@ -1,0 +1,20 @@
+{
+  "name": "intro-to-typescript",
+  "version": "1.0.0",
+  "description": "Introduction to TypeScript",
+  "scripts": {
+    "postinstall": "",
+    "tsc": "tsc",
+    "tsc:w": "tsc --watch",
+    "start": "concurrently \"npm run tsc:w\" \"superstatic\" "
+  },
+  "dependencies": {
+    "superstatic": "^6.0.4"
+  },
+  "devDependencies": {
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.2",
+    "@types/jquery": "3.3.31",
+    "concurrently": "^5.0.0"
+  }
+}

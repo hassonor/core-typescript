@@ -1,0 +1,8 @@
+{
+  "description": "Generics",
+  "files":[
+    "!**/*.d.ts",
+    "!**/*.js"
+  ],
+  "tags": ["typescript"]
+}
