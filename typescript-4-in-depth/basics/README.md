@@ -1,7 +1,3 @@
-# TypeScript 4 In-Depth
-
-___
-
 ## TypeScript Basics
 
 ___
