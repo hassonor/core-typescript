@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "outFile": "app/index.js"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
