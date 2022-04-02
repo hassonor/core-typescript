@@ -1,35 +1,32 @@
-import {Category} from "./enum";
-import {Book, DamageLogger, Author, Librarian} from './interfaces';
-import {Encyclopedia, ReferenceItem, UniversityLibrarian} from "./classes";
-
-function GetAllBooks(): Book[] {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const enum_1 = require("./enum");
+const classes_1 = require("./classes");
+function GetAllBooks() {
     let books = [
-        {id: 1, title: 'Ulysses', author: 'James Joyce', available: true, category: Category.Fiction},
+        { id: 1, title: 'Ulysses', author: 'James Joyce', available: true, category: enum_1.Category.Fiction },
         {
             id: 2,
             title: 'A Farewell to Arms',
             author: 'Ernest Hemingway',
             available: false,
-            category: Category.Fiction
+            category: enum_1.Category.Fiction
         },
         {
             id: 3,
             title: 'I Know Why the Caged Bird Sings',
             author: 'Maya Angelou',
             available: true,
-            category: Category.Poetry
+            category: enum_1.Category.Poetry
         },
-        {id: 4, title: 'Moby Dick', author: 'Herman Melville', available: true, category: Category.Fiction}
+        { id: 4, title: 'Moby Dick', author: 'Herman Melville', available: true, category: enum_1.Category.Fiction }
     ];
     return books;
 }
-
-function LogFirstAvailable(books = GetAllBooks()): void {
-    let numberOfBooks: number = books.length;
-    let firstAvailable: string = '';
-
+function LogFirstAvailable(books = GetAllBooks()) {
+    let numberOfBooks = books.length;
+    let firstAvailable = '';
     for (let currentBook of books) {
-
         if (currentBook.available) {
             firstAvailable = currentBook.title;
             break;
@@ -38,41 +35,31 @@ function LogFirstAvailable(books = GetAllBooks()): void {
     console.log('Total Books: ' + numberOfBooks);
     console.log('First Available: ' + firstAvailable);
 }
-
-function GetBookTitlesByCategory(categoryFilter: Category = Category.Fiction): Array<string> {
-    console.log('Getting books in category: ' + Category[categoryFilter]);
-
+function GetBookTitlesByCategory(categoryFilter = enum_1.Category.Fiction) {
+    console.log('Getting books in category: ' + enum_1.Category[categoryFilter]);
     const allBooks = GetAllBooks();
-    const filteredTitles: string[] = [];
-
+    const filteredTitles = [];
     for (let currentBook of allBooks) {
         if (currentBook.category === categoryFilter) {
             filteredTitles.push(currentBook.title);
         }
     }
-
     return filteredTitles;
 }
-
-function LogBookTitles(titles: string[]): void {
+function LogBookTitles(titles) {
     for (let title of titles) {
         console.log(title);
     }
 }
-
 LogFirstAvailable();
-
-
-function getBookByID(id: number): Book {
+function getBookByID(id) {
     const allBooks = GetAllBooks();
     return allBooks.filter(book => book.id === id)[0];
 }
-
-function CreateCustomerID(name: string, id: number): string {
+function CreateCustomerID(name, id) {
     return name + id;
 }
-
-function createCustomer(name: string, age?: number, city?: string): void {
+function createCustomer(name, age, city) {
     console.log('Creating customer ' + name);
     if (age) {
         console.log('Age: ' + age);
@@ -81,12 +68,9 @@ function createCustomer(name: string, age?: number, city?: string): void {
         console.log('City: ' + city);
     }
 }
-
-function CheckoutBooks(customer: string, ...bookIDs: number[]): string[] {
+function CheckoutBooks(customer, ...bookIDs) {
     console.log('Checking out books for ' + customer);
-
-    let booksCheckedOut: string[] = [];
-
+    let booksCheckedOut = [];
     for (let id of bookIDs) {
         let book = getBookByID(id);
         if (book.available) {
@@ -95,43 +79,26 @@ function CheckoutBooks(customer: string, ...bookIDs: number[]): string[] {
     }
     return booksCheckedOut;
 }
-
-
 // *******************************************
-
-
-let IdGenerator: (chars: string, nums: number) => string;
+let IdGenerator;
 IdGenerator = CreateCustomerID;
-
-let IdGenerator2: (chars: string, nums: number) => string;
-IdGenerator2 = (name: string, id: number) => {
+let IdGenerator2;
+IdGenerator2 = (name, id) => {
     return name + id;
-}
-
-let myID: string = IdGenerator('daniel', 10);
+};
+let myID = IdGenerator('daniel', 10);
 console.log(myID);
-
-// **************************************************************
-
-// const fictionBooks = GetBookTitlesByCategory(Category.Fiction);
-// fictionBooks.forEach((val, idx, arr) => console.log(++idx + ' - ' + val));
-
-
-/** Overloading Example **/
-function GetTitles(author: string): string[];
-
-function GetTitles(author: string, available: boolean): string[];
-function GetTitles(author: string, available?: boolean): string[] {
+function GetTitles(author, available) {
     const allBooks = GetAllBooks();
-    const searchResults: string[] = [];
-
+    const searchResults = [];
     if (available !== undefined) {
         for (let book of allBooks) {
             if (book.author === author && book.available === available) {
                 searchResults.push(book.title);
             }
         }
-    } else {
+    }
+    else {
         for (let book of allBooks) {
             if (book.author === author) {
                 searchResults.push(book.title);
@@ -140,65 +107,41 @@ function GetTitles(author: string, available?: boolean): string[] {
     }
     return searchResults;
 }
-
-let myBooks: string[] = GetTitles('James Joyce', false);
+let myBooks = GetTitles('James Joyce', false);
 myBooks.forEach(title => console.log(title));
-
-
-function PrintBook(currentBook: Book): void {
+function PrintBook(currentBook) {
     console.log(currentBook.title + ' by ' + currentBook.author);
 }
-
 let myBook = {
     id: 5,
     title: 'Pride and Prejudice',
     author: 'Or Hasson',
     available: true,
-    category: Category.Biography,
+    category: enum_1.Category.Biography,
     pages: 250,
-    markDamaged: (reason: string) => console.log('Damaged: ' + reason)
-}
-
+    markDamaged: (reason) => console.log('Damaged: ' + reason)
+};
 PrintBook(myBook);
 myBook.markDamaged('My Dog eat the book');
-
-let logDamage: DamageLogger;
-logDamage = (damage: string) => console.log('Damage reported: ' + damage);
+let logDamage;
+logDamage = (damage) => console.log('Damage reported: ' + damage);
 logDamage('coffee stains');
-
-
-let favoriteLibrarian: Librarian = new UniversityLibrarian();
+let favoriteLibrarian = new classes_1.UniversityLibrarian();
 favoriteLibrarian.name = 'Or';
 favoriteLibrarian.assistCustomer('Hasson');
-
-
 // **************************************
-
-let refBook: ReferenceItem = new Encyclopedia('Math', 2022, 2);
-refBook.printItem()
-refBook.printCitation()
-
-
+let refBook = new classes_1.Encyclopedia('Math', 2022, 2);
+refBook.printItem();
+refBook.printCitation();
 /** Class Expression Example **/
-let Newspaper = class extends ReferenceItem {
-    printCitation(): void {
-        console.log(`Newspaper: ${this.title}`)
+let Newspaper = class extends classes_1.ReferenceItem {
+    printCitation() {
+        console.log(`Newspaper: ${this.title}`);
     }
-}
-
+};
 let myPaper = new Newspaper('Israel Ayom', 2022);
 myPaper.printCitation();
-
-
 class Novel extends class {
-    title: string
 } {
-    mainCharacter: string;
 }
-
 let favoriteNovel = new Novel();
-
-
-
-
-

@@ -1,5 +1,7 @@
 ### Interfaces
 
+___
+
 * Contracts that define types
 * Compiler enforces the contract via type checking
 * Collection of property and method definitions
@@ -42,7 +44,7 @@ interface Book {
 }
 ```
 
-Interfaces for Function Types
+### Interfaces for Function Types
 
 ```ts
 function CreateCustomerID(name: string, id: number): string {
@@ -58,7 +60,7 @@ IdGenerator = CreateCustomerID;
 
 ```
 
-Extending Interfaces
+### Extending Interfaces
 
 ```ts
 interface LibraryResource {
@@ -80,7 +82,7 @@ let refBook: Encyclopedia = {
 }
 ```
 
-Class Types
+### Class Types
 
 ```ts
 interface Librarian {
@@ -95,5 +97,4 @@ class ElementarySchoolLibrarian implements Librarian {
 
 let kidsLibrarian: Librarian = new ElementarySchoolLibrarian();
 kidsLibrarian.doWork();
-
 ```

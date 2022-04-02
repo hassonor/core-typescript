@@ -12,7 +12,7 @@
     3. detect unused data / unreachable code
     4. source maps - debug directly in TypeScript
 
-## TypeScript Intro
+# TypeScript Intro
 
 ___
 
@@ -713,7 +713,7 @@ interface AccountInfo {
 * Classes can implement an interface by using the implements' keyword.
 * Abstract classes and interfaces can both be used to achieve polymorphic behavior.
 
-## TypeScript Generics
+# TypeScript Generics
 
 ____
 
