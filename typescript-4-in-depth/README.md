@@ -84,3 +84,178 @@ let secondElement = myTuple[1]; // bus
 myTuple[2] = 101;
 myTuple[2] = "Or Hasson";
 ```
+
+## TypeScript Functions
+
+___
+
+### Functions in TypeScript Versus JavaScript
+
+_**TypeScript**_:
+
+* Type
+* Arrow functions
+* Function types
+* Required and optional parameters
+* Default parameters
+* Rest parameters
+* Overloaded functions
+
+_**JavaScript**_:
+
+* Limited types and no type checking
+* Arrow function (ES2015)
+* No function types
+* All parameters are optional
+* Default parameters (ES2015)
+* Rest parameters (ES2015)
+* No overloaded functions
+
+### Arrow Functions
+
+* Concise syntax for anonymous functions
+* "this" is captured at function creation - not invocation
+
+### Function Types
+
+* Combination of parameter types and return type Variables may be declared with function types
+* Variables may be declared with function types
+* Function assigned must have the same signature as the variable type
+
+```ts
+function PublicationMessage(year: number): string {
+    return 'Date published: ' + year;
+}
+
+let publishFun: (someYear: number) => string;
+publishFunc = PublicationMessage;
+let message: string = publishFun(2021);
+```
+
+### Optional and Default Parameters
+
+* Optional parameters denoted with "?" after parameter name
+* Must appear after all required parameters
+* Default parameters may be set to a literal value or an expression
+
+```ts
+function CreateCustomer(name: string, age?: number) {
+}
+
+function GetBookByTitle(title: string = 'The JavaScript Programming Language') {
+}
+
+function GetBookByTitle(title: string = GetMostPupolarBook()) {
+}
+```
+
+### Rest Parameters
+
+* Collects a group of parameters into a single array.
+* Denoted with an ellipsis prefix on last parameter.
+
+```ts
+function GetBooksReadForCust(name: string, ...bookIDs: number[]) {
+}
+
+let books = GetBooksReadForCust('Or', 2, 4);
+let books2 = GetBooksReadForCust('Hasson', 1, 2, 3, 4, 5, 6);
+```
+
+### Interfaces
+
+* Contracts that define types
+* Compiler enforces the contract via type checking
+* Collection of property and method definitions
+* Duck typing
+
+_**Duck Typing**_:
+
+```ts
+interface Duck {
+    walk: () => void;
+    swim: () => void;
+    quack: () => void;
+}
+
+let probablyADuck = {
+    walk: () => console.log('walking like a duck'),
+    swim: () => console.log('swimming like a fuck'),
+    quack: () => console.log('quacking like a duck')
+}
+
+function FlyOverWater(bird: Duck) {
+}
+
+FlyOverWater(probablyADuck); // works!!!
+```
+
+Defining an Interface <br>
+`interface` keyword <br>
+List properties with their types<br>
+Optional properties denoted with "?"<br>
+Provide function signature - no implementation
+
+```ts
+interface Book {
+    id: number;
+    title: string;
+    author: string;
+    pages?: number;
+    markDamaed: (reason: string) => void;
+}
+```
+
+Interfaces for Function Types
+
+```ts
+function CreateCustomerID(name: string, id: number): string {
+    return name + id;
+}
+
+interface StringGenerator {
+    (chars: string, nums: number): string;
+}
+
+let IdGenerator = StringGenerator
+IdGenerator = CreateCustomerID;
+```
+
+Extending Interfaces
+
+```ts
+interface LibraryResource {
+    catalogNumber: number;
+}
+
+interface Book {
+    title: string;
+}
+
+interface Encyclopedia extends LibraryResource, Book {
+    volume: number;
+}
+
+let refBook: Encyclopedia = {
+    catalogNumber: 1234,
+    title: 'The Book of life',
+    volume: 120
+}
+```
+
+Class Types
+
+```ts
+interface Librarian {
+    doWork: () => void;
+}
+
+class ElementarySchoolLibrarian implements Librarian {
+    doWork() {
+        console.log('Reading to and teaching children...');
+    }
+}
+
+let kidsLibrarian: Librarian = new ElementarySchoolLibrarian();
+kidsLibrarian.doWork();
+```
