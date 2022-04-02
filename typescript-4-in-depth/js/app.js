@@ -145,3 +145,4 @@ class Novel extends class {
 } {
 }
 let favoriteNovel = new Novel();
+//*********************************************

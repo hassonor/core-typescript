@@ -1,6 +1,7 @@
 import {Category} from "./enum";
 import {Book, DamageLogger, Author, Librarian} from './interfaces';
 import {Encyclopedia, ReferenceItem, UniversityLibrarian} from "./classes";
+import {CalculateLateFee as CalcFee, MaxBooksAllowed} from "./lib/utilityFunctions";
 
 function GetAllBooks(): Book[] {
     let books = [
@@ -197,6 +198,12 @@ class Novel extends class {
 }
 
 let favoriteNovel = new Novel();
+
+
+//*********************************************
+
+
+
 
 
 
