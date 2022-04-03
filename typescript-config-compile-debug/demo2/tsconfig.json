@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/js",
+        "sourceMap": true
+    },
+    "include": [
+        "src/index.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ],
+    "references": [
+        {
+            "path": "./src/interfaces"
+        }
+    ]
+}

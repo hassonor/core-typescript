@@ -171,4 +171,128 @@ _*Single-file Compilation*_:
 * Fewer HTTP requests, simpler deployment to web applications
 * Greater consistency across browser / Node versions
 
+## Maximizing Collaboration with Project References and Type Declaration Files
 
+___
+
+### Project References
+
+___
+
+#### What Are Project References?
+
+Project references break large TypeScript applications into smaller blocks that can be built, imported and modified
+separately.
+
+* Separate application into logical silos.
+* Customize build steps for each sub-project.
+* Avoid building unnecessary files.
+
+__*Configuring Project References*__
+`tsconfig.json`
+
+```json
+{
+  "references": [
+    {
+      "path": "../performance"
+    }
+    // directory contains tsconfig.json file
+  ]
+}
+```
+
+#### Understanding Project References:
+
+* Projects referenced this way must have composite enabled.
+* Projects will be rebuilt as infrequently as possible.
+* Build flag will cause compiler to rebuild all projects
+* Circular dependencies must be avoided
+
+#### Type Declaration Files
+
+___
+
+#### What are Type Declaration Files?
+
+_*Type Declaration files let us add typings to values exported from normal JavaScript files.*_
+
+* __Code Hints__: Autocompletion and pre-compile warnings
+* __Type Checking__: More sophisticated type checking during compile
+* __External and Internal__: Use community declarations or author for your own project
+
+#### When to Use Type Declaration Files
+
+* With any major JS library or framework, use a declaration file downloaded from a community repository (i.e.
+  _*Definitely Typed*_)
+* With a locally authored JavaScript tool, create a declaration file and include it with that tool
+
+#### Understanding Definitely Typed
+
+The open-source community has gathered definitions for hundreds of legacy JavaScript libraries.<br>
+
+* Authoring original d.ts files for npm libraries not usually necessary.
+* Works for most libraries found in legacy projects - jQuery, underscore, etc.
+* Modern releases of libraries such as jQuery already include declaration files.
+
+#### Type Declaration are extremely useful for application development
+
+* Add time-saving code hints for developers
+* Prevent builds which would result in a type error
+* Developers can focus on task at hand
+* Author your own, or use Definitely Typed
+
+### Debugging Advantages of TypeScript
+
+___
+One of TypeScript's main advantages of JS is easier debugging in many cases. <br>
+
+* Type errors stopped at compile time
+* Additional tooltips, code hints prevent errors
+* Common pitfalls (such as switch statements lacking a break), are disabled
+
+#### Which Errors Cannot Be Prevented by TypeScript?
+
+* Incorrectly written function and miscalculations
+* Errors arising from corner cases and user input
+* Unanticipated values from third party APIs
+
+#### Source Maps
+
+* Couples generated code with source code
+* Browser will show source file, not generated file, while debugging
+* Can be embedded entirely within generated file
+
+__*Enabling Sources Maps*__
+
+```json
+{
+  "compilerOptions": {
+    "sourceMap": true
+  }
+}
+```
+
+### Standardizing TypeScript Styling with ESLint
+
+___
+
+#### What is __ESLint__?
+
+* Tool for evaluating application _*source code*_
+* Capable of analyzing code style - bracket spacing, line breaks, tabs and spaces, etc.
+* Works with continuous integration - pull requests with incorrectly styled code can be rejected automatically
+
+#### What Should Use __ESLing__?
+
+* Large teams
+* Large Projects
+* Projects with indefinite scope
+* When more unified style is needed
+
+#### What Kind of TypeScript Style Can ESLint Enforce?
+
+* Styling and spacing TypeScript specific code (e.g, type annotations)
+* Disallowed keywords(with,do)
+* Preferred code conventions (e.g., requiring classes to always define a constructor)
+* Invisible style choices (tabs vs spacing, empty new line at EOF)

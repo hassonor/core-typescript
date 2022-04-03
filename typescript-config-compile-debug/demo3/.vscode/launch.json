@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+
+        "type": "chrome",
+        "request": "launch",
+        "name": "Open debugger Chrome instance to application",
+        "url": "http://localhost:7777",
+        "webRoot": "${workspaceFolder}",
+        "sourceMaps": true,
+        "trace": "verbose"
+        
+    }]
+}
