@@ -1,7 +1,4 @@
-import {User} from './User';
-import {Company} from './Company';
-
-
+/// <reference types="@types/google.maps" />
 // Instructions to every other class
 // on how they can be an argument to 'addMarker'
 export interface Mappable {
@@ -9,31 +6,40 @@ export interface Mappable {
         lat: number;
         lng: number;
     };
+
+    markerContent(): string;
+
+    color: string;
 }
 
 export class CustomMap {
-    private googleMap: google.maps.Map;
+    private readonly googleMap: google.maps.Map;
 
     constructor(divId: string) {
         this.googleMap = new google.maps.Map(document.getElementById(divId), {
             zoom: 1,
             center: {
                 lat: 0,
-                lng: 0
-            }
+                lng: 0,
+            },
         });
     }
 
-    addMarker(entity: Mappable): void {
-
-        new google.maps.Marker({
+    addMarker(mappable: Mappable): void {
+        const marker = new google.maps.Marker({
             map: this.googleMap,
             position: {
-                lat: entity.location.lat,
-                lng: entity.location.lng
-            }
-        })
+                lat: mappable.location.lat,
+                lng: mappable.location.lng,
+            },
+        });
+
+        marker.addListener('click', () => {
+            const infoWindow = new google.maps.InfoWindow({
+                content: mappable.markerContent(),
+            });
+
+            infoWindow.open(this.googleMap, marker);
+        });
     }
-
-
 }
