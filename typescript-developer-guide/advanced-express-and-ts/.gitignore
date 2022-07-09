@@ -1,0 +1,13 @@
+examples/**/scripts/**/*.js.map
+examples/**/scripts/**/*.js
+
+!examples/cookbook/src/scripts/libs/jquery-1.12.2.js
+
+node_modules
+jspm_packages
+bower_components
+
+plnkr.html
+#plnkr.demo.html
+
+npm-debug.log
