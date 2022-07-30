@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "Or Hasson",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^7.3.3"
+  }
 }
