@@ -12,8 +12,8 @@
   "author": "Or Hasson",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^18.0.0",
-    "concurrently": "^7.2.2",
-    "nodemon": "^2.0.18"
+    "@types/node": "^18.11.10",
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
   }
 }

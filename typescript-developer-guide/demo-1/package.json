@@ -11,6 +11,6 @@
   "license": "MIT",
   "dependencies": {
     "reflect-metadata": "^0.1.13",
-    "ts-node": "^10.8.2"
+    "ts-node": "^10.9.1"
   }
 }
