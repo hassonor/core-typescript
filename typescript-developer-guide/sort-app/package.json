@@ -12,7 +12,7 @@
   "author": "Or Hasson",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
     "concurrently": "^7.6.0"
