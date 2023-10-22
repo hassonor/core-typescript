@@ -58,3 +58,44 @@ function testArguments(...args: (string[] | number[])[]) {
 testArguments("1");
 testArguments(10,20);
 ```
+
+#### Function signature parameters
+___
+TypeScript uses its strong typing rules
+to ensure that if we define that if we define a function that needs a callback function,
+we can ensure that this function is provided correctly.
+In introduces the fat arrow syntax, or `()=>`, to indicate a function signature.
+```typescript
+function myCallback(text: string): void {
+    console.log(`myCallback called with ${text}`)
+}
+
+function withCallbackArg(
+    message: string, callbackFn: (text:string)=> void
+){
+    console.log(`withCallback called, message : ${message}`);
+    callbackFn(`${message} from withCallback`)''
+}
+```
+Here, we have defined a strongly typed function named `myCallback` that has a single parameter names `text`,
+which is of type string, and returns void.
+We have defined a strongly typed function named `withCallbackArg` that also has two parameters.
+The first parameter is names `message` and is of type string,
+and the second parameter, names `callbackFn`, is using the fat arrow syntax, as follows: `callbackFn:
+(text:string)=> void`.<br>
+This syntax defines the `callbackFn` parameter as being a function that accepts a single parameter of type string,
+and returns void.<br>
+We can then use this `withCallbackArg` function as follows:
+```typescript
+withCallbackArg("initial text", myCallback);
+withCallbackArg("text", "this is not a function");
+```
+Here, we have invoked the `withCallbackArg` function twice: one legitimately,
+by providing a string and a function as arguments, and once in error, by providing two strings as arguments.
+This code will produce the following error:
+```shell
+error TS2345: Argument of type '"this is not a function"' is not assignable to parameter of type '(text: string)=> void'
+```
+The compiler won't allow us
+to invoke the `withCallbackArg` function
+if we do not provide the second argument as a function with a signature that matches our function definition.
