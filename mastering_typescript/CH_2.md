@@ -43,3 +43,18 @@ function getEnumValue(enumValue: AnEnum): String{
 }
 ```
 Using the `never` type here safeguards our code so that we can pick up these errors earlier.
+
+#### Rest parameters
+___
+In order to express the equivalent function definition in TS, we will need to use, 'rest syntax` as follows':
+
+```typescript
+function testArguments(...args: (string[] | number[])[]) {
+    for (let i in args){
+        console.log(`args[${i}] = ${args[i]}`)
+    }
+}
+
+testArguments("1");
+testArguments(10,20);
+```
