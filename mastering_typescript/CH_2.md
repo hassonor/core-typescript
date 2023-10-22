@@ -99,3 +99,32 @@ error TS2345: Argument of type '"this is not a function"' is not assignable to p
 The compiler won't allow us
 to invoke the `withCallbackArg` function
 if we do not provide the second argument as a function with a signature that matches our function definition.
+
+#### Literals
+___
+TypeScript also allows up to use that are known as `literals`, which are almost a hybrid of enums and type aliases.
+A literal will limit the allowed values to a set of values specified.
+A literal can be made of string, number, or boolean values.
+```typescript
+type AllowedStringValue = "one" | "two" | "three";
+type AllowedNumericValues = 1 | 20 | 65535;
+
+function withLiteral(input: AllowdStringValues | AllowdNumericValues){
+    console.log(`called with: ${input}`);
+}
+
+withLiteral("one"); // "called with one"
+withLiteral("two"); // "called with two"
+withLiteral("three"); // "called with three"
+withLiteral(65535); // "called with 65535"
+
+withLiteral("four");
+withLiteral(2);
+```
+We will get the following errors:
+```shell
+error TS2345: Argument of type '"four"' is not assignable to paramter of type '1 | 20 | "one" | "two" | "three" | 65535'.
+error TS2345: Argument of type '2' is not assignable to paramter of type '1 | 20 | "one" | "two" | "three" | 65535'.
+```
+Literals provide us with another tool that we can use when we need to define a function that accepts a standard string,
+number, or boolean, but where we need to limit the values provided to a defined set of values.
