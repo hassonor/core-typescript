@@ -74,3 +74,37 @@ printNameOrValue({
 }); // obj.value : 2
 
 ```
+
+#### keyof
+```typescript
+interface IPerson {
+    id: number;
+    name: string;
+}
+
+type PersonPropertyName = keyof IPerson;
+```
+We are using the `keyof` keyword to generate a string literal type for the properties found in the `IPerson` interface.
+This is equivalent to the following string literal: `type PersonPropertyLiteral = "id"  | "name";`.
+<br>
+We can now use this type as follows:
+```typescript
+function getProperty(key: PersonPropertyName, value: IPerson){
+    console.log(`${key}  = ${value[key]}`);
+}
+
+getProperty("id", {id: 1, name: "firstName"});
+getProperty("name", {id: 2, name: "secondName"});
+getProperty("telephone", {id: 3, name: "thirdName"});
+```
+The first call to the `getProperty` function will output the value of the "id"
+property, and the second call to the `getProperty` function will output the value of the "name" property.
+The third call, however, will generate the following error:
+```shell
+error TS2345: Argument of type '"telephone"' is not assignable to parameter of type '"id" | "name"'.'
+```
+
+Using the `keyof` keyword will generate a string literal
+that automatically includes all of the properties of an interface.
+This technique is obviously preferable to having to maintain string literals manually.
+
