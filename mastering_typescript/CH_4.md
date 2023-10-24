@@ -151,6 +151,6 @@ and call the `logToConsole` function with the `printObject` variable as the only
 It will print: `printObject.print() called`.
 <br>
 We can see
-that the `logToConsole` function of the `LogClass` instance is the `print` function of the `printObject` varaible.
+that the `logToConsole` function of the `LogClass` instance is the `print` function of the `printObject` variable.
 
 
