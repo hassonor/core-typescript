@@ -174,3 +174,45 @@ In other words, the `arg1` parameter is a type that overloads the `new` function
 The last line of this code snippet show how we intend to use the `createClassInstance` function.
 We are calling this function with the class definition of `ClassA` as the only argument.
 The anonymous type
+
+### Advanced type inference
+___
+#### Mapped Types
+```typescript
+interface IAbRequired {
+    a: number;
+    b: string;
+}
+
+let ab: IAbRequired = {
+    a: 1,
+    b: "test"
+}
+
+type WeakInterface<T> = {
+    [K in keyof T]?: T[K];
+}
+
+let allOptional: WeakInterface<IAbRequired> = {}
+```
+Here, we have defined an interface named `IAbRequired` that has two properties,
+named a type number, and b of type string.
+We then create an instance of an object named `ab`,
+which is of type `IAbRequired`, and as such, must define both an `a` and `b` property,
+as both properties are required.<br><br>
+We then create a type alias name `WeakInterface`,
+which uses generic syntax to allow it to be used with any type named `T`.
+This type alias also specifies a second type, `K`, that is using the `keyof` keyword on the type `T`.
+The effect of the `keyof` keyword is
+that the `WeakInterface` type will contain a property for each property that the type `T` defines.
+Note, However, that the definition of the properties,
+that is `[K in keyof T]?`, is also using the optional property operator `?`,
+and the type of each property has been defined as `T[K]`.
+In other words, return the type of the original property of type `T`, named `K`, but make it optional.<br><br>
+What this means is that we are defining a type named `WeakInterface`,
+which accepts a type named `T`, and we are transforming each property that is defined for `T` into an optional property.
+<br><br>
+The last line of this code snippet defines a variable named `allOptional`,
+which is of the type `WeakInterface<IAbRequired>`.
+This, therefore, makes all the properties that were named on the `IAbRequried` interface optional,
+and our object can be constructed with no properties.
