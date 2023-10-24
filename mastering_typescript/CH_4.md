@@ -216,3 +216,74 @@ The last line of this code snippet defines a variable named `allOptional`,
 which is of the type `WeakInterface<IAbRequired>`.
 This, therefore, makes all the properties that were named on the `IAbRequried` interface optional,
 and our object can be constructed with no properties.
+
+#### Partial, Readonly, Record and Pick
+```typescript
+/**
+ * Make all properties in T optional
+ */
+
+type Partial<T> = {
+    [P in keyof T]?: T[P];
+}
+```
+Here, we can see the type definition for a type named `Partial`,
+which will transform each property in the type named `T` into an optional property.
+<br><br>
+Similarly, we can use the `Readonly` mapped type to mark each property as `readonly` as follows:
+```typescript
+/**
+ * Make all properties in T readonly
+ */
+type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+}
+
+interface IAbRequired {
+    a: number;
+    b: string;
+}
+
+
+let readOnlyVar: Readonly<IAbRequired> = {
+    a: 1, 
+    b: "test"
+}
+readonlyVar.a = 2
+```
+The last line of the code snippet,
+which is attempting to assign the value of 2 to the property, will generate the following error:
+```shell
+error TS2540: Cannot assign to 'a' bnecause it is a read-only property.
+```
+<br><br>
+Outside the standard mapped types of `Partial` and `Readonly`,
+there are two other interesting mapped types, named `Pick` and `Record`.
+The `Pick` mapped type is used to construct a type based on a subset of properties of another type, as follows:
+```typescript
+interface IAbc {
+    a: number;
+    b: string;
+    c: boolean;
+}
+
+type PickAb = Pick<IAb, "a" | "b">;
+
+let pickAbObject: PickAb = {
+    a: 1, 
+    b: "test"
+}
+```
+The final mapped type that we will explore is the `Record` mapped type, which is used to construct a type on the fly.
+It is almost the opposite of the Pick mapped type,
+and used a provided list of properties as a string literal to define what properties the type must have. 
+```typescript
+type RecordedCd = Record<"c" | "d", number>;
+
+let recordedCdVar: RecordedCd = {
+    c: 1,
+    d: 1
+};
+```
+
+
