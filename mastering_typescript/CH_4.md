@@ -145,7 +145,7 @@ let printObject: IPrint = {
 let logClass = new LogClass();
 logClass.logToConsole(printObject); // printObject.print() called
 ```
-here, we have an object named `printObject` that implements the `IPrint` interface as it has a `print` function.
+Here, we have an object named `printObject` that implements the `IPrint` interface as it has a `print` function.
 We then create an instance of the `LogClass` class,
 and call the `logToConsole` function with the `printObject` variable as the only argument.<br>
 It will print: `printObject.print() called`.
@@ -153,4 +153,24 @@ It will print: `printObject.print() called`.
 We can see
 that the `logToConsole` function of the `LogClass` instance is the `print` function of the `printObject` variable.
 
+#### Creating new objects within generics
+Generic classes may need to create an object of the type that was passed in as the generic type `T`. 
+```typescript
+class ClassA { }
+class ClassB { } 
 
+function createClassInstance<T>(arg1: {new(): T}): T{
+    return new arg1()
+}
+
+let classAInstance = createClassInstance(ClassA);
+```
+We have defined two classes, named `ClassA` and `ClassB`.
+We then define a function named `createClassInstance` that is using generic syntax to define the type `T`.
+This function has a single parameter named `arg1` of type `{new():T}`.
+the `arg1` parameter are constructing an anonymous type that defines a `new` function, and returns the type T, that is `arg1: {new(): T}`.
+In other words, the `arg1` parameter is a type that overloads the `new` function, and return an instance of `T`.
+<br><br>
+The last line of this code snippet show how we intend to use the `createClassInstance` function.
+We are calling this function with the class definition of `ClassA` as the only argument.
+The anonymous type
