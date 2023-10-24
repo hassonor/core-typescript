@@ -285,5 +285,18 @@ let recordedCdVar: RecordedCd = {
     d: 1
 };
 ```
+#### Conditional types
+```typescript
+type NumberOrString<T> = T extends number ? number : string;
+
+function logNumberOrString<T>(input: NumberOrString<T>){
+    console.log(`logNumberOrString : ${input}`);
+}
+
+logNumberOrString<number>(1);
+logNumberOrString<string>("test");
+```
+
+
 
 
