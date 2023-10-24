@@ -79,7 +79,7 @@ The code will generate the following errors:
 error TS2339: Property 'id' does not exist on type 'T'
 error TS2339: Property 'name' does not exist on type 'T'
 ```
-This error clearly indicates that the `id` and `name` property does not exist on the type `T`. <br>
+This error clearly indicates that the `id` and `name` property does not exist on the type `T`. <Br>
 In other words, we are only able to call properties or functions on type `T` where they are common to all types of `T`.
 As the `id` property is unique to the `IPrintId` interface,
 and the `name` property is unique to `IPrintName` interface,
@@ -88,3 +88,29 @@ The only property that these two interfaces have in common is the `print` functi
 and therefore only the `print` function can be used in this case.<br><br>
 TypeScript will ensure that we are only able to reference properties and functions on a type of `T`,
 where these properties and function are common across all types that are allowed for `T`.
+
+#### Generic constraints
+```typescript
+function printProperty<T, K extends keyof T>(object: T, key: K){
+    let propertyValue = object[key];
+    console.log(`object[${key}] = ${propertyValue}`)
+}
+
+let obj1 = {
+    id: 1, 
+    name: "Or Hasson",
+    print() { console.log(`${this.id}`)}
+}
+
+printProperty(obj1, "id"); // object[id] = 1
+printProperty(obj1, "name"); // object[name] = Or Hasson
+printProperty(obj1, "print"); // object[print] = function() {console.log("" + this.id);}
+
+printProperty(obj1, "surname");
+```
+The last line of this code snippet will produce the following error:
+```shell
+error TS2345: Argument of type '"surname"' is not assignable to paramteter of type '"id"' | "name" | "print"'
+```
+
+
