@@ -112,5 +112,45 @@ The last line of this code snippet will produce the following error:
 ```shell
 error TS2345: Argument of type '"surname"' is not assignable to paramteter of type '"id"' | "name" | "print"'
 ```
+#### Generic interfaces
+In the same manner that functions and classes can use generics,
+we are also able to create interfaces that use generic syntax.
+```typescript
+interface IPrint{
+    print(): void
+}
+
+interface ILogInterface<T extends IPrint>{
+    logToConsole(iPrintObj: T): void;
+}
+
+class LogClass<T extends IPrint> implements ILogInterface<T>{
+    logToConsole(iPrintObj: T): void {
+        iPrintObj.print()
+    }
+}
+```
+We have defined an interface named `IPrint` that has a single function names `print` that returns `void`.
+We then define an interface named `ILogInterface`
+that is using generic syntax to define a type `T` that extends the `IPrint` interface.
+This interface has a single function named `logToConsole`, which has a single parameter named `iPrintObj`, of type `T`.
+We then have a class definition for a class named `LogClass`,
+which is also using generic syntax to define a type `T` that extends from the `IPrint` interface.
+This class implements the `ILogInterface` interface, and as such must define a `logToConsole` function.
+```typescript
+let printObject: IPrint = {
+    print(){ console.log(`printObject.print() called`)}
+}
+
+let logClass = new LogClass();
+logClass.logToConsole(printObject); // printObject.print() called
+```
+here, we have an object named `printObject` that implements the `IPrint` interface as it has a `print` function.
+We then create an instance of the `LogClass` class,
+and call the `logToConsole` function with the `printObject` variable as the only argument.<br>
+It will print: `printObject.print() called`.
+<br>
+We can see
+that the `logToConsole` function of the `LogClass` instance is the `print` function of the `printObject` varaible.
 
 
