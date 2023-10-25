@@ -341,8 +341,37 @@ console.log(`keyAb = ${keyAb}`); // keyAb = |1|OrHasson|
 
 let keyAbc = getTupleStringAbc([1,"OrHasson",true]);
 console.log(`keyAbc = ${keyAbc}`); // keyAbc = |1|OrHasson|true|
-
 ```
+
+#### Distributed conditional types
+When defining conditional types,
+instead of returning only a single type as part of our conditional statements,
+we can also return a number of types, or distributed conditional types.
+```typescript
+type dateOrNumberOrString<T> = 
+    T extends Date ? Date :
+    T extends number ? Date | number :
+    T extends string ? Date | number | string : 
+    nerver;
+
+function compareValues<T extends string | number | Date | boolean>(
+    input: T,
+    compareTo: dateOrNumberOrString<T>
+){
+    // do comparision
+}
+
+compareValues(new Date(), new Date());
+compareValues(1, new Date());
+compareValues(1,2);
+compareValues("test", new Date());
+```
+* If the `input` parameter is of type `Date`, then the `compareTo` parameter may only be of type `Date`.
+* If the `input` parameter is of type `number`, then the `compareTo` parameter may be either a `Date` or a`number`.
+* If the `input` parameter is of type `string`, then the `compareTo` parameter may be either a `Date` or `number`, or a `string`.
+* If the `input` parameter is not of type `Date`, `number` or `string`, then do not allow this function to be called.
+
+
 
 
 
