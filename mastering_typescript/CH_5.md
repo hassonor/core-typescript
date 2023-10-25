@@ -61,4 +61,77 @@ delayedPromise().then(()=>{
 });
 ```
 
+#### Promise errors
+A Promise object is constructed with a function that has two callback functions,
+generally named `resolve` and `reject`.
+Thus far, we have only used the `resolve` callback to indicate that the Promise processed successfully.
+We can use the `reject` callback in the case where we we want to report an error, as follows:
+```typescript
+function errorPromise(): Promise<void>{
+    return new Promise<void>(
+        (
+            resolve: () => void,
+            reject: () => void
+        ) => {
+            console.log(`2. calling reject()`);
+            reject();
+        }
+    )
+}
+
+console.log(`1. calling errorPromise()`);
+errorPromise().then(() => { })
+    .catch(()=> { console.log(`3. caught an error`)});
+```
+The output of this code is as follows:
+```
+1. calling errorPromise()
+2. calling reject()
+3. caught an error
+```
+
+#### Returning values from Promises
+```typescript
+function promiseReturningString(throwError: boolean): Promise<string>
+{
+    return new Promise<string>(
+        (
+            resolve: (outputValue: string) => void,
+            reject: (errorCode: nummber) => void
+        ) => {
+            if (throwError){
+                reject(101);
+            }
+            resolve(`resolve with message`);
+        }
+    )
+}
+
+console.log(`1. calling promiseReturningString`);
+
+promiseReturningString(false)
+    .then((returnValue: string) =>{
+        console.log(`2. retunedValue : ${returnValue}`);
+    }).catch((errorCode: number)=>{
+        console.log(`this is not called`);
+});
+```
+The output code is as follows:
+```
+1. calling promiseReturningString
+2. returnedValue : resolve with message
+```
+
+Note that we can also force an error from this Promise by switching the `throwError` argument from `false` to `true`,
+as follows:
+```typescript
+promiseReturnString(true)
+    .then((returnValue: string)=>{
+        console.log(`this is not called`);
+    })
+    .catch((errorCode: number)=>{
+        console.log(`2. caught : ${errorCode}`)
+    })
+```
+
 
