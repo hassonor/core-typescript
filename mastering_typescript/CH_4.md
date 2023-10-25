@@ -297,6 +297,52 @@ logNumberOrString<number>(1);
 logNumberOrString<string>("test");
 ```
 
+#### Conditional type chaining
+In a similar way to how conditional statements can be chained together,
+conditional types can also be chained together to form a logic free that will return a specific type. 
+```typescript
+interface IA {
+    a: number;
+}
+
+interface IAb {
+    a: number;
+    b: string;
+}
+
+interface IAbc {
+    a: number;
+    b: string;
+    c: boolean;
+}
+
+type abc_ab_a<T> = 
+    T extends IAbc ? [number,string,boolean] :
+    T extends IAb ? [number, string] :
+    T extends IA ? [number] :
+    never;
+
+function getTupleStringAbc<T>(tupleValue: abc_ab_a<T>): string
+{
+    let [...tupleDestructured] = tupleValue;
+    let returnString = "|";
+    for (let value of tupleDestructured){
+        returnString += `${value}|`;
+    }
+    
+    return returnString;
+}
+
+let keyA = getTupleStringAbc([1]);
+console.log(`keyA = ${keyA}`); // keyA = |1|
+
+let keyAb = getTupleStringAbc([1,"OrHasson"]);
+console.log(`keyAb = ${keyAb}`); // keyAb = |1|OrHasson|
+
+let keyAbc = getTupleStringAbc([1,"OrHasson",true]);
+console.log(`keyAbc = ${keyAbc}`); // keyAbc = |1|OrHasson|true|
+
+```
 
 
 
