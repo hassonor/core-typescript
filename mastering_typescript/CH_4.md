@@ -414,7 +414,18 @@ function testInferredFromReturnType<T>(
 
 testInferredFromReturnType<(a: string) => number>(1)
 testInferredFromReturnType<(a: string) => boolean>(true)
+```
+#### Type inference from arrays
+There is one other syntax that can be used from an inferred type, which is used when inferring a type from an array.
+This is best described with an example, as follows:
+```typescript
+type inferredTypeFromArray<T> = 
+    T extends (infer U)[] ? U : never;
 
+function testInferredFromArray<T>(args: inferredTypeFromArray<T>){ }
+
+testInferredFromArray<strings[]>("OrHasson");
+testInferredFromArray<number[]>(1);
 
 ```
 
