@@ -426,8 +426,8 @@ function testInferredFromArray<T>(args: inferredTypeFromArray<T>){ }
 
 testInferredFromArray<strings[]>("OrHasson");
 testInferredFromArray<number[]>(1);
-
 ```
+
 
 
 
