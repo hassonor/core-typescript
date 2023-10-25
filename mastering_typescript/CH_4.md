@@ -371,6 +371,54 @@ compareValues("test", new Date());
 * If the `input` parameter is of type `string`, then the `compareTo` parameter may be either a `Date` or `number`, or a `string`.
 * If the `input` parameter is not of type `Date`, `number` or `string`, then do not allow this function to be called.
 
+#### Conditional type inference
+There is a further, and more esoteric version of the conditional type syntax,
+where we are able to infer a new type as part of a conditional type statement.
+```typescript
+
+type inferFromPropertyType<T> = 
+    T extends { id: infer U } ? U : never;
+
+function testInferFromPropertyType<T>(arg: inferFromPropertyType<T>){ }
+
+testInferFromPropertyType<{id: string}>("test");
+testInferFromPropertyType<{id: number}>(1);
+```
+Remember that a conditional type is a computed type based on the original type that is given as an input.
+This means that in order to use a conditional type, we need to supply an input type,
+and the conditional type will be computed for us, based on the input type.
+
+#### Type inference from function signatures
+We can also infer types based on function signatures.
+These inferred types can be inferred from either the function arguments, or from the function return type.
+```typescript
+type inferredFromFnParam<T> = 
+    T extends (a: infer U) => void ? U : never;
+
+function testInferredFromFnParam<T>(
+    arg: inferredFromFnParam<T>
+) { }
+
+testInferredFromFnParam<(a: number) => void>(1);
+testInferredFromFnParam<(a: string) => void>("OrHasson");
+```
+
+In a similar manner, we can also infer a type from the return type of function:
+```typescript
+type inferredFromFnReturnType<T> =
+    T extends (a: string) => infer U ? U : never;
+
+function testInferredFromReturnType<T>(
+    arg: inferredFromFnReturnType<T>
+){ }
+
+testInferredFromReturnType<(a: string) => number>(1)
+testInferredFromReturnType<(a: string) => boolean>(true)
+
+
+```
+
+
 
 
 
