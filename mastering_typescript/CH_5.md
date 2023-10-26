@@ -206,4 +206,43 @@ complexPromise(
 });
 ```
 
+### Async and await
+
+___
+
+#### Await syntax
+
+```typescript
+export function delayedPromise(): Promise<void> {
+    return new Promise<void>(
+        (
+            resolve: () => void,
+            reject: () => void) => {
+            setTimeout(() => {
+                console.log(`2. calling resolve()`)
+                resolve();
+            }, 1000)
+        }
+    )
+}
+
+async function callDelayPromise() {
+    console.log(`1. brfore calling delayedPromise`);
+    await delayerPromise();
+    console.log(`3. after calling delayedPromise`)
+}
+```
+
+Running this code will produce the following output:
+
+```cmd
+1. before calling delayedPromise
+2. calling resolve()
+3. after calling delayedPromise
+```
+
+This `async` and `await` technique relly helps us when writing code that is sequential in nature.
+If we have many steps in our code that must be executed one after the other,
+then this technique is invaluable in producing easy-to-read and east-to maintain code.
+
 
