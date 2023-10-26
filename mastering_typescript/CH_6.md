@@ -60,3 +60,45 @@ simpleDecorator called
 ```
 
 Decorators are called in the reverse order of their appearance withing our code.
+
+#### Types of decorators
+
+* `Class decorators`: These are decorators that can be applied to a class definition
+* `Property decorators`: These are decorators that can be applied to a property within class
+* `Method decorators`: These are decorators that can be applied to a method on a class
+* `Paramter decorators`: These are decorators that can be applied to a parameter of a method withing a class
+
+As an example of these types of decorators, consider the following code:
+
+```typescript
+function classDecorator(constructor: Function) {
+}
+
+function propertyDecorator(
+    target: any,
+    propertyKey: string) {
+}
+
+function methodDecorator(
+    target: any,
+    methodName: string,
+    paramterIndex: number) {
+}
+```
+
+We would use each of these decorators as follows:
+
+```typescript
+@classDecorator
+class ClassWithAllTypesOfDecrators {
+    @peropertyDecorator
+    id: number = 1;
+
+    @methodDecorator
+    print() {
+    }
+
+    setId(@paramterDecorator id: number) {
+    }
+}
+```
