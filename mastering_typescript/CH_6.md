@@ -125,3 +125,66 @@ The output of this code is as follows:
 ```text
 decorator function called with : OrTest
 ```
+
+### Exploring decorators
+
+___
+
+#### Class decorators
+
+```typescript
+function classConstructorDec(constructor: Function) {
+    console.log(`constructor : ${constructor}`);
+}
+
+@classConstructorDec
+class ClassWithConstructor {
+    constructor(id: number) {
+    }
+}
+```
+
+Here, we have a decorator function named `classConstructorDec`,
+which is logging the value of the `constructor` argument to the console.
+We have then applied this decorator to a class named `ClassWithConstructor`.
+This `ClassWithConstructor` class has a single `constructor` function that accepts a single parameter named `id`,
+of type number.
+The output of this code is as follows:
+
+```cmd
+constructor : function ClassWithConstructor(id){ }
+```
+
+We can see that the decorator was invoked with a single argument,
+which is the definition of the constructor function itself.
+Note that this definition is the JavaScript definition, and not the TypeScript definition,
+as there is no type for the `id` parameter.
+What this is showing us is that a class decorator will be called with the definition of the class constructor itself.
+
+Let's update our `classConstructorDec` decorator and use it to modify the class definition itself, as follows:
+
+```typescript
+function classConstructorDec(constructor: Function) {
+    console.log(`constructor : ${constructor}`);
+    constructor.prototype.testProperty = "testProperty_value"
+}
+
+@classConstructorDec
+class ClassWithConstructor {
+    constructor(id: number) {
+    }
+}
+
+let classInstance = new ClassWithConstructor(1);
+console.log(`classInstance.testProperty = ${(<any>classInstance).testProperty}`)
+```
+
+Here, we are creating an instance of the `ClassWithConstructor` class, named `classInstance`.
+We are then logging the value of the `testProperty` property of this class instance to the console.
+Note that we need to cast the `classInstance` variable to a type of any in order to access this property,
+as it does not appear on the initial class definition.
+The output of this code is as follows:
+
+```text
+classInstance.testProperty = testProperty_value
+```
