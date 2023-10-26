@@ -286,3 +286,129 @@ propertyName : nameProperty
 class name : StaticClassWithPropertyDec
 propertyName: staticProperty
 ```
+
+#### Method decorators
+
+```typescript
+function methodDec(
+    target: any,
+    methodName: string,
+    descriptor?: PropertyDescriptor
+) {
+    console.log(`target : ${target}`);
+    console.log(`methodName : ${methodName}`);
+    console.log(`descriptor : ${JSON.stringify(descriptor)}`);
+    console.log(`target[methodName] : ${target[methodName]}`);
+}
+```
+
+Let's apply this decorator to a class as follows:
+
+```typescript
+class ClassWithMethodDec {
+    @methoDec
+    print(output: string) {
+        console.log(`ClassWithMethodDec.print` + `(${output}) called.`)
+    }
+}
+```
+
+The output of this code is as follows:
+
+```text
+target: [object Object]
+methodName: print
+descriptor: {"writable": true, "enumerable": true, "configurable": true}
+target[methodName] : function (output) {
+    console.log("ClassWithMethodDec.print" + ("(" + output + ") called. ")
+}
+```
+
+#### Using method decorators
+
+When a method decorator is called by the JavaScript runtime,
+it includes the `target` object that the method is available on, and it also includes the name of the method.
+We can then use this information to modify the original function.
+Let's
+tak ea look at an example that will create an audit trail of some sort
+and log a message to the console every time a function is called.
+
+```typescript
+function auditLogDec(target: any, methodName: string, descriptor?: PropertyDescriptor) {
+    let originalFunction = target[methodName];
+
+    let auditFunction = function (this: any) {
+        console.log(`1. auditLog : overide of ${methodName} called`)
+        for (let i = 0; i < arguments.length; i++) {
+            console.log(`2. arg : ${i} = ${arguments[i]}`);
+        }
+        originalFunction.apply(this, arguments);
+    }
+
+    target[methodName] = auditFunction;
+    return target;
+}
+```
+
+Here, we have a method decorator named `auditLogDec`,
+with the three parameters needed for a method decorator named `target`, `methodName`, and `descriptior`.
+Within this function, we create a variable named `originalFunction`,
+and set its value to the function of the decorated class, that is, `target[methodName]`.
+We then create a new function named `auditFunction` that does three things.
+Firstly, it logs a message to the console.
+Secondly,
+it loops through all the arguments that were provided to it and then logs a message to the console with their values.
+Thirdly, it calls the `apply` function on the `originalFunction` variable,
+passing in a `this` argument, and the `arguments` argument that it was invoked with.
+<br><br>
+After defining `auditFunction` and, within it,
+invoking the `originalFunction` of our decorated class,
+we set the value of the original class function to the new function,
+on the line `target[methodname] = auditFunction`, and return the updated class definition named `target`.<br><br>
+In essence, we have made a copy of the original class function that we decorated, wrapped the call to this function with
+our own function.
+In so doing, we have modified the decorated method on the class definition itself, all withing a decorator.<br><br>
+To show this technique in action, let's create a class definition as follows:
+
+```typescript
+function auditLogDec(target: any, methodName: string, descriptor?: PropertyDescriptor) {
+    let originalFunction = target[methodName];
+
+    let auditFunction = function (this: any) {
+        console.log(`1. auditLog : overide of ${methodName} called`)
+        for (let i = 0; i < arguments.length; i++) {
+            console.log(`2. arg : ${i} = ${arguments[i]}`);
+        }
+        originalFunction.apply(this, arguments);
+    }
+
+    target[methodName] = auditFunction;
+    return target;
+}
+
+class ClassWithAuditDec {
+    @auditLogDec
+    print(arg1: string, arg2: string) {
+        console.log(`3. ClassWithMethodDec.print` + `(${arg1}, ${arg2}) called.`)
+    }
+}
+
+let auditClass = new ClassWithAuditDec();
+auditClass.print("test1", "test2");
+```
+
+The output of this code is as follows:
+
+```text
+1. auditLogDec : override of print called
+2. arg : 0 = test1
+2. arg : 1 = test2
+3. ClassWithMethodDec.print(test1, test2) called.
+```
+
+Here,
+we can clearly see the effects of our decorator function
+being applied to the `print` method of the `ClassWithAuditDec` class.
+Our decorator function has intercepted the call to the `print` function,
+logged a few messages to the console, and then invoked the original function itself.<br><br>
+Using method decorators provides us with a powerful technique of injecting extra functionality into a class method.
