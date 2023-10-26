@@ -222,3 +222,67 @@ as we would expect, because it is, in fact, a class definition.
 We can also see from the second line of the console output that this object has a `constructor` function,
 and we are able to print its definition to the console.
 We also have the name of the property that we decorated passed in as the `propertyName` argument.
+
+#### Static property decorators
+
+```typescript
+function propertyDec(target: any, propertyName: string) {
+    console.log(`target : ${target}`);
+    console.log(`target.constructor : ${target.constructor}`);
+    console.log(`propertyName : ${propertyName}`);
+}
+
+class StaticClassWithPropertyDec {
+    @propertyDec
+    static staticProperty: string;
+}
+```
+
+We have applied the `propertyDec` decorator to a `property` named `staticProperty` on a class
+named `StaticClassWithPropertyDec`.
+The outputs of the various console logs withing our decorator are as follows:
+
+```txt
+target : function StaticClassWithPropertyDec(){
+}
+target.constructor : function Function() { [native code] } 
+propertyName: staticProperty
+```
+
+We can see that the `target` argument is not a function,
+where it was an `object`, or, more accurately, a class `prototype` object previously.
+The `constuctor` property of this function is now a function,
+and the `propertyKey` argument contains the name of our property.
+<br><br>
+Let's now update our `propertyDec` property decorator to correctly identify the class name in both of these cases,
+as follows:
+
+```typescript
+function propertyDec(target: any, propertyName: string) {
+    if (typeof (target) === 'function') {
+        console.log(`class name : ${target.name}`)
+    } else {
+        console.log(`class name : + ${target.constructor.name}`)
+    }
+    console.log(`propertyName : ${propertyName}`)
+}
+
+class ClassWithPropertyDec {
+    @propertyDec
+    nameProperty: string | undefined;
+}
+
+class StaticClassWithPropertyDec {
+    @propertyDec
+    static staticProperty: string;
+}
+```
+
+Now, the output of this updated code is as follows:
+
+```text
+class name : ClassWithPropertyDec
+propertyName : nameProperty
+class name : StaticClassWithPropertyDec
+propertyName: staticProperty
+```
