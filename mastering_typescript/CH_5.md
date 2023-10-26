@@ -245,4 +245,73 @@ This `async` and `await` technique relly helps us when writing code that is sequ
 If we have many steps in our code that must be executed one after the other,
 then this technique is invaluable in producing easy-to-read and east-to maintain code.
 
+#### Await errors
+
+```typescript
+function errorPromise(): Promise<string> {
+    return new Promise<string>(
+        (
+            resolve: (result: string) => void,
+            reject: (error: string) => void) => {
+            setTimeout(() => {
+                console.log(`2. calling reject()`)
+                reject("promise rejected");
+            }, 1000)
+        }
+    )
+}
+
+async function callErrorPromise() {
+    try {
+        console.log(`1. calling errorPromise()`);
+        await errorPromise();
+    } catch (error) {
+        console.log(`3. await threw: ${error}`)
+    }
+}
+```
+
+The output of this code is as follows:
+
+```cmd
+1. calling errorPromise()
+2. calling reject()
+3. await threw : promise rejected
+```
+
+#### Await values
+
+The async await syntax also allows values to be returned by Promises, in a similar manner to how we would use
+the `then` function blocks in Promise fluent syntax.
+Let's take a look at this in action, starting with a Promise that returns some values, as follows:
+
+```typescript
+function promiseWithValues(): Promise<string> {
+    return new Promise<string[]>(
+        (
+            resolve: (values: string) => void,
+            reject: (error: string) => void) => {
+
+            resolve(["first", "second"]);
+
+        }
+    )
+}
+
+async function getValuesFromPromise() {
+    let values = await promiseWithValues();
+    for (let value of values) {
+        console.log(`value : ${value}`)
+    }
+}
+
+getValuesFromPromise();
+```
+
+The output of this code is as follows:
+
+```cmd
+  value : first
+  value : second
+```
 
