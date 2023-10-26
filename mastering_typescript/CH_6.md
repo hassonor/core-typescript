@@ -102,3 +102,26 @@ class ClassWithAllTypesOfDecrators {
     }
 }
 ```
+
+#### Decorator factories
+
+A decorator factory function is created by wrapping the decorator function itself within a function, as follows:
+
+```typescript
+function decoratorFactory(name: string) {
+    return (constructor: Function) => {
+        console.log(`decorator function called with : ${name}`)
+    }
+}
+
+@decoratorFactory("OrTest")
+class ClassWithDecoratorFactory {
+
+}
+```
+
+The output of this code is as follows:
+
+```text
+decorator function called with : OrTest
+```
