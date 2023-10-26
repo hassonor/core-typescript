@@ -6,7 +6,7 @@ import * as fs from "fs";
 /**
  * This code demonstrates reading multiple files sequentially using the promises API from Node.js's `fs` module.
  *
- * 1. **Importing the Module**: 
+ * 1. **Importing the Module**:
  *    We start by importing the `fs` module, specifically its promises API. This allows us to utilize the file system operations in a promise-based fashion.
  *
  * 2. **Reading `test1.txt`**:
@@ -23,51 +23,55 @@ import * as fs from "fs";
  */
 
 fs.promises.readFile("./test1.txt")
-    .then((value)=>{
+    .then((value) => {
         console.log(`ps test1.txt read : ${value}`)
         return fs.promises.readFile("./test2.txt");
-    }).then((value)=>{
-        console.log(`ps test2.txt read : ${value}`);
-        return fs.promises.readFile("./text3.txt");
-    }).then((value)=>{
-        console.log(`ps test3.txt read : ${value}`);
-}).catch((error)=>{
+    }).then((value) => {
+    console.log(`ps test2.txt read : ${value}`);
+    return fs.promises.readFile("./text3.txt");
+}).then((value) => {
+    console.log(`ps test3.txt read : ${value}`);
+}).catch((error) => {
     console.log(`an error occured : ${error}`);
 });
 ```
 
 #### Promise syntax
+
 A Promise is an instance of a new Promise class
 whose constructor required a function signature that accepts two callback functions,
 generally named `resolve` and `reject`.
 
 ```typescript
-function delayedPromise(): Promise<void>{
+function delayedPromise(): Promise<void> {
     return new Promise<void>(
         (
             resolve: () => void,
             reject: () => void
         ) => {
-            function afterTimeout(){
+            function afterTimeout() {
                 resolve();
             }
+
             setTimeout(afterTimeout, 1000);
         }
     );
 }
 
-delayedPromise().then(()=>{
+delayedPromise().then(() => {
     console.log(`delayed promise returned`);
 });
 ```
 
 #### Promise errors
+
 A Promise object is constructed with a function that has two callback functions,
 generally named `resolve` and `reject`.
 Thus far, we have only used the `resolve` callback to indicate that the Promise processed successfully.
 We can use the `reject` callback in the case where we we want to report an error, as follows:
+
 ```typescript
-function errorPromise(): Promise<void>{
+function errorPromise(): Promise<void> {
     return new Promise<void>(
         (
             resolve: () => void,
@@ -80,10 +84,15 @@ function errorPromise(): Promise<void>{
 }
 
 console.log(`1. calling errorPromise()`);
-errorPromise().then(() => { })
-    .catch(()=> { console.log(`3. caught an error`)});
+errorPromise().then(() => {
+})
+    .catch(() => {
+        console.log(`3. caught an error`)
+    });
 ```
+
 The output of this code is as follows:
+
 ```
 1. calling errorPromise()
 2. calling reject()
@@ -91,15 +100,15 @@ The output of this code is as follows:
 ```
 
 #### Returning values from Promises
+
 ```typescript
-function promiseReturningString(throwError: boolean): Promise<string>
-{
+function promiseReturningString(throwError: boolean): Promise<string> {
     return new Promise<string>(
         (
             resolve: (outputValue: string) => void,
             reject: (errorCode: nummber) => void
         ) => {
-            if (throwError){
+            if (throwError) {
                 reject(101);
             }
             resolve(`resolve with message`);
@@ -110,13 +119,15 @@ function promiseReturningString(throwError: boolean): Promise<string>
 console.log(`1. calling promiseReturningString`);
 
 promiseReturningString(false)
-    .then((returnValue: string) =>{
+    .then((returnValue: string) => {
         console.log(`2. retunedValue : ${returnValue}`);
-    }).catch((errorCode: number)=>{
-        console.log(`this is not called`);
+    }).catch((errorCode: number) => {
+    console.log(`this is not called`);
 });
 ```
+
 The output code is as follows:
+
 ```
 1. calling promiseReturningString
 2. returnedValue : resolve with message
@@ -124,14 +135,75 @@ The output code is as follows:
 
 Note that we can also force an error from this Promise by switching the `throwError` argument from `false` to `true`,
 as follows:
+
 ```typescript
 promiseReturnString(true)
-    .then((returnValue: string)=>{
+    .then((returnValue: string) => {
         console.log(`this is not called`);
     })
-    .catch((errorCode: number)=>{
+    .catch((errorCode: number) => {
         console.log(`2. caught : ${errorCode}`)
     })
+```
+
+#### Promise return types
+
+* A Promise is an object that requires a function to be passed in as part of its constructor. This function can be a
+  named function, or an anonymous function, but it is more common to see the anonymous function syntax used.
+* The function that is passed into a Promise has a very specific signature. It requires two parameters, generally
+  named `resolve` and `reject`, that are themselves callback functions.
+  The `resolve` function will be invoked as a callback if the Promise itself succeeds,
+  and the `reject` function will be invoked as a callback if the Promise fails.
+* There can be one, and only one, parameter for the `resolve` callback function.
+  This parameter is of the type that we used in the Promise generic syntax.
+* There can be one, and only one, parameter for the `reject` callback function. This parameter does not need to be the
+  same type as the type used in the `resolve` callback function.
+* These `resolve` and `reject` callback functions must return void.
+
+Suppose we wanted to create a Promise that connects to a database, and returns some data.
+We might start with a few interfaces as follows:
+
+```typescript
+interface IConnection {
+    server: string;
+    port: number;
+}
+
+interface IError {
+    code;
+    number;
+    message: string;
+}
+
+interface IDataRow {
+    id: number;
+    name: string;
+    surname: string;
+}
+
+function complexPromise(
+    connection: IConnection,
+    accessKey: string
+): Promise<IDataRow[]> {
+    return new Promise<IDataRow[]>((resolve: (results: IDataRow[]) => void, reject: (error: IError) => void) => {
+        // check the connection properties
+        // connect to the database
+        // retrieve data, or
+        // reject with an error
+    });
+}
+
+complexPromise(
+    {
+        server: "myServer",
+        port: 4200
+    },
+    "abcd"
+).then((rows: IDataRow[]) => {
+    // do something with rows
+}).catch((error: IError) => {
+    // do something with error
+});
 ```
 
 
