@@ -188,3 +188,37 @@ The output of this code is as follows:
 ```text
 classInstance.testProperty = testProperty_value
 ```
+
+#### Property decorators
+
+Property decorators have two parameters, which are the class prototype itself and the property name.
+Let's take a look at these parameters, as follows:
+
+```typescript
+function propertyDec(target: any, propertyName: string) {
+    console.log(`target : ${target}`);
+    console.log(`target.constructor : ${target.constructor}`);
+    console.log(`propertyName : ${propertyName}`);
+}
+
+class ClassWithPropertyDec {
+    @propertyDec
+    nameProperty: string | undefined;
+}
+```
+
+Here, we have defined a class named `ClassWithPropertyDec`,
+which is decorating a single property named `nameProperty` with our `propertyDec` decorator.
+The output of this code is as follows:
+
+```txt
+target: [object Object]
+target.constructor : function classWithPropertyDec(){ }
+propertyName : nameProperty
+```
+
+We can see that the `target` argument that was passed to our decorator is an object,
+as we would expect, because it is, in fact, a class definition.
+We can also see from the second line of the console output that this object has a `constructor` function,
+and we are able to print its definition to the console.
+We also have the name of the property that we decorated passed in as the `propertyName` argument.
