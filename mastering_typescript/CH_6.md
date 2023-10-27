@@ -439,3 +439,121 @@ target: [object Object]
 methodName: print
 parameterIndex: 0
 ```
+
+#### Decorator metadata
+
+Change `exitDecoratorMetadata` on `tsconfig.json` to `true`:
+
+```json
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  }
+}
+```
+
+Let's now take a closer look at the effect that this compile option has on our generated JavaScript.
+Consider the following, parameter decorator:
+
+```typescript
+function metaddataParameterDec(
+    target: any,
+    methodName: string,
+    parameterIndex: number
+) {
+}
+
+class ClassWithMetadata {
+    print(
+        @metadataParameterDec id: number, name: string
+    ) {
+    }
+}
+```
+
+When the `emitDecoratorMetadata` option in our `tsconfig.json` file is set to `true`,
+the generated JavaScript will contain more information, as follows:
+
+```javascript
+function metadataParamterDec(target, methodName, parameterIndex) {
+}
+
+var classWithMetadata = /** @class */ (function () {
+    function ClassWithMetadata() {
+    }
+
+    ClassWithMetadata.prototype.print = function (id, name) {
+    };
+    _decorate([
+        _param(0, metadataParamterDec),
+        _metadata("design:type", Function),
+        _metadata("design:paramters", [Number, String]),
+        _metadata("design:returntype", void 0)
+    ], ClassWithMetadata.prototype, "print", null);
+    return ClassWithMetadata;
+}());
+```
+
+The `design:type` key is used to specify that the `print` method is,
+in face, a function The `design:paramtypes` key is used to specify the types of each method parameter,
+which in this case is `Number` and `String`,
+and the `design:returntype` key indicates what the return type of this function is, which in this case is `void`.
+
+#### Using decorator metadata
+
+In order to put this extra information that is provided to a decorator to use, we will need to
+install `npm install reflect-metadata`.
+
+We can now start to use this metadata by calling the `Reflect.getMetadata` function that this library provides,
+as follows:
+
+```typescript
+import 'reflect-metadata';
+
+function reflectParameterDec(target: any, methodName: string, parameterIndex: number) {
+    let designType = Reflect.getMetadata(
+        "design:type", target, methodName)
+    console.log(`design type: ${designType.name}`)
+
+    let designParamTypes = Reflect.getMetadata(
+        "design:paramtypes", target, methodName);
+
+    for (let paramType of designParamTypes) {
+        console.log(`param type : ${paramType.name}`);
+    }
+
+    let designReturnType = Reflect.getMetadata(
+        "design:returntype", target, methodName
+    );
+    console.log(`return types : ${designReturnType.name}`);
+}
+
+class ClassWithReflectMetaData {
+    print(
+        @reflectParameterDec
+            id: number,
+        name: string
+    ): number {
+        return 777;
+    }
+}
+```
+
+The output of this code is as follows:
+
+```text
+design type : Function
+param type : Number
+param type : String
+return types : Number
+```
+
+The information
+that is recorded by the TypeScript compiler when using the `emitDecoratorMetadata` compiler flag can be read
+and interpreted at runtime.
+Remember that type information which is used by our code,
+and the TypeScript compiler, is compiled away in the resulting JavaScript.
+Using decorator metadata allows us to retain some of this type information
+and opens the door to using this type of information to generate code analysis tools, for example,
+or to write frameworks for dependency injection.
