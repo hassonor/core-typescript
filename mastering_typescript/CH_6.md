@@ -412,3 +412,30 @@ being applied to the `print` method of the `ClassWithAuditDec` class.
 Our decorator function has intercepted the call to the `print` function,
 logged a few messages to the console, and then invoked the original function itself.<br><br>
 Using method decorators provides us with a powerful technique of injecting extra functionality into a class method.
+
+#### Parameter decorators
+
+Parameter decorators can be used to decorate a specific parameter within a method of a class.
+As an example, consider the following decorator:
+
+```typescript
+function parameterDec(target: any, methodName: string, parameterIndex: number) {
+    console.log(`target: ${target}`);
+    console.log(`methodName : ${methodName}`);
+    console.log(`parameterIndex : ${parameterIndex}`);
+}
+
+class ClassWithParamDec {
+    print(@parameterDec value: string) {
+
+    }
+}
+```
+
+The output of this code is as follows:
+
+```text
+target: [object Object]
+methodName: print
+parameterIndex: 0
+```
