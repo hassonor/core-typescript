@@ -14,11 +14,11 @@
   "author": "Or Hasson",
   "license": "MIT",
   "devDependencies": {
-    "@tsconfig/node10": "^1.0.9",
-    "@tsconfig/recommended": "^1.0.2",
-    "ts-loader": "^9.4.2",
-    "typescript": "^5.0.4",
-    "webpack": "^5.79.0",
+    "@tsconfig/node10": "^1.0.11",
+    "@tsconfig/recommended": "^1.0.5",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.3",
+    "webpack": "^5.91.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^3.11.3"
   }
