@@ -1,0 +1,276 @@
+# Core TypeScript — Cursor Rules
+
+## Role and Expertise
+
+You are an expert TypeScript developer and educator. You write clean, type-safe code that demonstrates TypeScript's power and best practices. Your code is readable, well-documented, and serves as a learning reference.
+
+## Project Overview
+
+This is an educational TypeScript repository covering topics from basic types to advanced generic patterns. It is organized as a collection of standalone examples and modules — not a production application. Each directory represents a topic area with progressive complexity.
+
+## Code Style
+
+### General Principles
+- Follow **ESLint** and **Prettier** configurations strictly.
+- Use **TypeScript strict mode** (`strict: true` in tsconfig.json).
+- Prefer **clarity over cleverness** — this is an educational repo.
+- Write **type-safe code** with explicit types where beneficial for learning.
+- Maximum line length of **100 characters**.
+- Use **const** by default, **let** when reassignment needed (never **var**).
+- Leverage TypeScript's **type inference** when types are obvious.
+
+### Naming Conventions
+- **Variables and functions**: `camelCase`
+- **Classes and interfaces**: `PascalCase`
+- **Type aliases**: `PascalCase` (e.g., `UserType`, `ConfigOptions`)
+- **Enums**: `PascalCase` for enum name, `PascalCase` for members
+- **Constants**: `UPPER_SNAKE_CASE`
+- **Files**: `kebab-case.ts` or `PascalCase.ts` (consistent within directories)
+- **Interfaces**: No `I` prefix (use `User`, not `IUser`)
+- **Type parameters**: Single uppercase letter (`T`, `K`, `V`) or descriptive (`TUser`, `TKey`)
+
+## Project Structure
+
+```
+core-typescript/
+├── basics/               # Primitive types, arrays, tuples
+├── functions/            # Function types, overloads, generics
+├── objects-interfaces/   # Object types, interfaces, index signatures
+├── classes/              # Classes, inheritance, abstract classes
+├── generics/             # Generic functions, classes, constraints
+├── advanced-types/       # Union, intersection, conditional types
+├── type-manipulation/    # Mapped types, template literals, infer
+├── decorators/           # Class, method, property decorators
+├── modules/              # ES modules, namespaces
+├── utility-types/        # Partial, Pick, Omit, Record, etc.
+├── patterns/             # Design patterns in TypeScript
+└── best-practices/       # Type safety, performance, testing
+```
+
+## Type Safety
+
+- Use **explicit types** for function parameters and return values (educational clarity).
+- Avoid `any` — use `unknown` and **type guards** to narrow types.
+- Use **type assertions** sparingly (only when you know more than TS).
+- Leverage **discriminated unions** for type-safe state machines.
+- Use **const assertions** (`as const`) for literal types.
+- Use **type predicates** for custom type guards (`is` keyword).
+
+### Type Safety Examples
+```typescript
+// Type guard function
+function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
+// Discriminated union
+type Result<T> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+
+function handleResult<T>(result: Result<T>): void {
+  if (result.success) {
+    console.log(result.data); // Type: T
+  } else {
+    console.error(result.error); // Type: string
+  }
+}
+```
+
+## Generics
+
+- Use **generics** for reusable, type-safe components.
+- Add **constraints** to generics when needed (`T extends SomeType`).
+- Use **default type parameters** for convenience.
+- Use **multiple type parameters** when appropriate (`<T, K, V>`).
+- Name type parameters **descriptively** in complex scenarios (`TUser`, `TKey`).
+
+### Generic Examples
+```typescript
+// Generic function with constraint
+function findById<T extends { id: number }>(
+  items: T[],
+  id: number
+): T | undefined {
+  return items.find(item => item.id === id);
+}
+
+// Generic class
+class DataStore<T> {
+  private data: T[] = [];
+
+  add(item: T): void {
+    this.data.push(item);
+  }
+
+  getAll(): T[] {
+    return [...this.data];
+  }
+}
+```
+
+## Error Handling
+
+- Use **custom error classes** with proper types.
+- Throw **specific error types** for different failure modes.
+- Use **Result/Option types** for functional error handling (educational).
+- Type **error objects** in catch blocks (`catch (error: unknown)`).
+- Use **never** type for functions that never return (throw always).
+
+### Error Handling Example
+```typescript
+class ValidationError extends Error {
+  constructor(public field: string, message: string) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+function validateAge(age: number): void {
+  if (age < 0) {
+    throw new ValidationError('age', 'Age cannot be negative');
+  }
+  if (age > 150) {
+    throw new ValidationError('age', 'Age must be realistic');
+  }
+}
+
+// Handling unknown errors
+try {
+  validateAge(-5);
+} catch (error) {
+  if (error instanceof ValidationError) {
+    console.error(`Validation failed: ${error.field} - ${error.message}`);
+  } else {
+    console.error('Unexpected error:', error);
+  }
+}
+```
+
+## Advanced Types
+
+- Use **union types** for values that can be multiple types (`string | number`).
+- Use **intersection types** to combine types (`User & Timestamps`).
+- Use **conditional types** for type transformations (`T extends U ? X : Y`).
+- Use **mapped types** to transform object types (`{ [K in keyof T]: T[K] }`).
+- Use **template literal types** for string manipulation in types.
+
+### Advanced Type Examples
+```typescript
+// Conditional type
+type NonNullable<T> = T extends null | undefined ? never : T;
+
+// Mapped type
+type Readonly<T> = {
+  readonly [K in keyof T]: T[K];
+};
+
+// Template literal type
+type EventName<T extends string> = `on${Capitalize<T>}`;
+type ClickEvent = EventName<'click'>; // 'onClick'
+```
+
+## Clean Code Principles
+
+- **Single Responsibility**: Each function, class, type should have one purpose.
+- **DRY**: Extract repeated types into type aliases or interfaces.
+- **Meaningful Names**: Type names should clearly describe what they represent.
+- **Small Functions**: Keep functions focused and under 20-30 lines.
+- **Type Composition**: Build complex types from simpler ones.
+- **Smart Comments**: Explain **why** a type is structured a certain way.
+
+## Documentation Standards
+
+- Every example file should have a **header comment** explaining the topic.
+- Use **JSDoc comments** for functions and classes (TSDoc format).
+- Use **@example** tags to show usage in documentation.
+- Each directory has a **README.md** explaining concepts and progression.
+- Include **type annotations in examples** even when inference would work.
+- Keep the root **README.md** in sync with the directory structure.
+
+### Documentation Example
+```typescript
+/**
+ * Filters an array based on a predicate function.
+ *
+ * @template T - The type of elements in the array
+ * @param items - The array to filter
+ * @param predicate - Function to test each element
+ * @returns A new array with elements that pass the test
+ *
+ * @example
+ * const numbers = [1, 2, 3, 4, 5];
+ * const evens = filter(numbers, n => n % 2 === 0);
+ * // evens: [2, 4]
+ */
+function filter<T>(items: T[], predicate: (item: T) => boolean): T[] {
+  return items.filter(predicate);
+}
+```
+
+## Educational Patterns
+
+- **Show type evolution**: Start with basic types, evolve to generic versions.
+- **Compare approaches**: Show JavaScript vs TypeScript solutions.
+- **Demonstrate inference**: Show when explicit types help vs when inference is sufficient.
+- **Include mistakes**: Show common errors and how TypeScript catches them.
+- **Progress complexity**: Simple examples first, advanced patterns later.
+- **Use console.log()**: Demonstrate runtime behavior alongside type safety.
+
+### Educational Example
+```typescript
+// Evolution of a function from basic to generic
+
+// Version 1: Specific type
+function getFirstString(items: string[]): string | undefined {
+  return items[0];
+}
+
+// Version 2: Multiple overloads (verbose)
+function getFirst(items: string[]): string | undefined;
+function getFirst(items: number[]): number | undefined;
+function getFirst(items: any[]): any {
+  return items[0];
+}
+
+// Version 3: Generic (reusable, type-safe)
+function getFirst<T>(items: T[]): T | undefined {
+  return items[0];
+}
+
+// Usage demonstrates type inference
+const firstNumber = getFirst([1, 2, 3]); // Type: number | undefined
+const firstName = getFirst(['a', 'b']); // Type: string | undefined
+```
+
+## TypeScript Best Practices
+
+- Enable **strict mode** and all strict flags.
+- Use **interfaces** for public APIs, **type aliases** for unions/primitives.
+- Prefer **unknown over any** for truly unknown types.
+- Use **const assertions** for literal types and readonly arrays.
+- Leverage **utility types** instead of writing custom mapped types.
+- Use **enums** judiciously (prefer union types or const objects).
+- Avoid **non-null assertions** (`!`) unless absolutely necessary.
+
+## Testing Patterns
+
+- Write **type tests** to verify type behavior (using type assertions).
+- Show **testing with generics** (ensuring type safety in tests).
+- Demonstrate **mocking typed dependencies**.
+- Use **satisfies** keyword to validate types without widening.
+
+### Type Testing Example
+```typescript
+// Type test using satisfies (TS 4.9+)
+const config = {
+  apiUrl: 'https://api.example.com',
+  timeout: 5000,
+  retries: 3
+} satisfies Config; // Ensures config matches Config, preserves literal types
+
+// Compile-time type test
+type AssertEqual<T, U> = T extends U ? (U extends T ? true : false) : false;
+const test: AssertEqual<string, string> = true; // ✓ Passes
+// const test2: AssertEqual<string, number> = true; // ✗ Error
+```
